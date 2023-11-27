@@ -1,8 +1,8 @@
 env:
     SYSDIG_SECURE_ENDPOINT: "https://us2.app.sysdig.com"
     REGISTRY_HOST: "quay.io"
-    IMAGE_NAME: "pball-image-test"
-    IMAGE_TAG: "my-tag"
+    IMAGE_NAME: "ballimage"
+    IMAGE_TAG: "balltag"
     DOCKERFILE_CONTEXT: "k8s-specifications/"
 name: Container build, scan and push
 on: [push, pull_request]
