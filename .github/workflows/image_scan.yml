@@ -1,0 +1,26 @@
+name: Image Scan
+
+on:
+  push:
+    branches:
+      - main  # Change this to your preferred branch
+
+jobs:
+  scan_image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install sysdig CLI scanner
+        run: |
+          curl -sLO https://download.sysdig.com/scanning/sysdig-cli-scanner/latest_version.txt
+          latest_version=$(cat latest_version.txt)
+          curl -sL -o sysdig-cli-scanner "https://download.sysdig.com/scanning/bin/sysdig-cli-scanner/$latest_version/linux/amd64/sysdig-cli-scanner"
+          chmod +x sysdig-cli-scanner
+
+      - name: Scan Docker image
+        env:
+          SECURE_API_TOKEN: ${{ secrets.SECURE_API_TOKEN }}
+        run: |
+          ./sysdig-cli-scanner -a https://us2.app.sysdig.com/ mcr.microsoft.com/oss/kubernetes-csi/azurefile-csi:v1.26.9
